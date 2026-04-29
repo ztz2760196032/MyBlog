@@ -1,8 +1,12 @@
 // 这里编写自定义js脚本；将被静态引入到页面中
-// 滚动模糊 - 宇航员封面动态效果
-(function() {
+// 滚动模糊 - 封面动态效果
+// 等待页面元素完全加载后，再执行滚动模糊特效
+document.addEventListener('DOMContentLoaded', function () {
   const img = document.getElementById('header-cover');
-  if (!img) return;
+  if (!img) {
+    console.warn('未找到 #header-cover 元素，滚动模糊特效未启动');
+    return;
+  }
 
   function updateBlur() {
     const rect = img.getBoundingClientRect();
@@ -18,8 +22,8 @@
     const totalHeight = rect.height;
     const visibleRatio = Math.max(0, Math.min(1, visibleHeight / totalHeight));
 
-    const blur = (1 - visibleRatio) * 8; // 最大模糊 8px
-    const opacity = 0.3 + visibleRatio * 0.7; // 最低透明度 0.3
+    const blur = (1 - visibleRatio) * 8;
+    const opacity = 0.3 + visibleRatio * 0.7;
 
     img.style.filter = `blur(${blur}px)`;
     img.style.opacity = opacity;
@@ -29,4 +33,4 @@
   window.addEventListener('scroll', updateBlur, { passive: true });
   window.addEventListener('resize', updateBlur, { passive: true });
   updateBlur();
-})();
+});
